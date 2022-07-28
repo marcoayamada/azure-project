@@ -1,0 +1,7 @@
+pyodbc
+faker
+python-dotenv
+sqlalchemy
+pandas
+azure-identity
+azure-keyvault-secrets
