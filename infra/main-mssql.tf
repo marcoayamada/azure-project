@@ -13,17 +13,15 @@ resource "azurerm_mssql_server" "this" {
   }
 }
 
-# resource "azurerm_mssql_database" "this" {
-#   name           = "db-001"
-#   server_id      = azurerm_mssql_server.example.id
-#   collation      = "SQL_Latin1_General_CP1_CI_AS"
-#   license_type   = "LicenseIncluded"
-#   max_size_gb    = 4
-#   read_scale     = true
-#   sku_name       = "S0"
-#   zone_redundant = true
+resource "azurerm_mssql_firewall_rule" "this" {
+  name             = "PersonalPublicIp"
+  server_id        = azurerm_mssql_server.this.id
+  start_ip_address = "${chomp(data.http.myip.body)}"
+  end_ip_address   = "${chomp(data.http.myip.body)}"
+}
 
-#   tags = {
-#     foo = "bar"
-#   }
-# }
+resource "azurerm_mssql_database" "this" {
+  name           = "db-example-001"
+  server_id      = azurerm_mssql_server.this.id
+  sku_name       = "Basic"
+}
